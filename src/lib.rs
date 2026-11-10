@@ -13,7 +13,7 @@ mod utils;
 /// modules directly.
 mod prelude {
     pub use super::*;
-    pub use {components::*, plugins::*, resources::*, styles::*, utils::*};
+    pub use {components::*, plugins::*, resources::*, styles::*, third_party::*, utils::*};
 }
 
 pub struct AppPlugin;
@@ -21,7 +21,7 @@ pub struct AppPlugin;
 impl Plugin for AppPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins((
-            third_party::plugin,
+            third_party::ThirdPartyPlugin,
             plugins::camera::plugin,
             plugins::defaults::plugin,
             plugins::fonts::plugin,
