@@ -1,5 +1,5 @@
 [package]
-name = "starter"
+name = "arpg"
 version = "0.1.0"
 edition = "2024"
 license = "LICENSE.txt"
@@ -8,47 +8,86 @@ publish = false
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bevy = "0.19"
-# Temporary until Avian merges 0.19 changes
-avian2d = "0.7.0"
-# Temporary until bevy_enchanced_input merges 0.19 changes
-bevy_enhanced_input = "0.26.0"
+log = {
+  version = "*",
+}
 
+tracing = {
+  version = "0.1",
+  features = [
+    "max_level_debug",
+    "release_max_level_error",
+  ],
+}
+
+# Assets, Loadings and Data Driven Shenanigans
+bevy_asset_loader = { version = "0.28", features = ["3d", "progress_tracking"] }
+bevy_common_assets = { version = "0.18", features = ["ron", "toml"] }
+iyes_progress = { version = "0.18", features = [] }
+
+# Input menager
+bevy_enhanced_input = { version = "0.27" }
+
+# Character Controller
+bevy-tnua = { version = "0.33" }
+bevy-tnua-avian3d = { version = "0.13" }
+
+# Debug dependencies
+bevy_console = { version = "0.19.0", optional = true }
+
+# Navmesh and Navigation
+vleue_navigator = { version = "0.17.0", default-features = false, features = ["avian3d", "detailed-layers"] }
+
+# Others
 rand = { version = "0.10", features = ["thread_rng"] }
-log = { version = "*", features = ["max_level_debug", "release_max_level_error"] }
-# Compile low-severity logs out of web builds for performance.
-tracing = { version = "0.1", features = ["max_level_debug", "release_max_level_warn"] }
 
+# Physics
+[dependencies.avian3d]
+version = "0.8"
+default-features = false
+features = ["3d", "bevy_picking", "bevy_scene", "collider-from-mesh", "parallel", "parry-f32"]
+
+# Bevy configuration
+[dependencies.bevy]
+version = "0.20"
+default-features = false
+features = ["3d", "ui"]
+
+# This app features
+# Enable debug features from dependecias as a *dev* or *dev-native* if not available in wasm
 [features]
 default = [
   # Default to a native dev build.
   "dev_native",
 ]
-dev_native = [
-  "dev",
-  # Enable asset hot reloading for native dev builds.
-  "bevy/file_watcher",
-  # Enable embedded asset hot reloading for native dev builds.
-  "bevy/embedded_watcher",
-]
 dev = [
+  "avian3d/debug-plugin",
+  "avian3d/diagnostic_ui",
+  "bevy/bevy_ui_debug",
+  "bevy/dev",
   # Improve compile times for dev builds by linking Bevy as a dynamic library.
   "bevy/dynamic_linking",
-  "bevy/bevy_dev_tools",
-  "bevy/bevy_ui_debug",
   # Improve error messages coming from Bevy
   "bevy/track_location",
-  "avian2d/diagnostic_ui"
+  "vleue_navigator/debug-with-gizmos",
+]
+dev_native = [
+  # Enable embedded asset hot reloading for native dev builds.
+  "bevy/embedded_watcher",
+  # Enable asset hot reloading for native dev builds.
+  "bevy/file_watcher",
+  "bevy/hotpatching",
+  "dev",
 ]
 
 [lints.clippy]
+# Make sure macros use their standard braces, such as `[]` for `bevy_ecs::children!`.
+nonstandard_macro_braces = "warn"
 # Bevy supplies arguments to systems via dependency injection, so it's natural for systems to
 # request more than 7 arguments, which would undesirably trigger this lint.
 too_many_arguments = "allow"
 # Queries may access many components, which would undesirably trigger this lint.
 type_complexity = "allow"
-# Make sure macros use their standard braces, such as `[]` for `bevy_ecs::children!`.
-nonstandard_macro_braces = "warn"
 
 # Enable a small amount of optimization in debug mode
 [profile.dev]
@@ -66,17 +105,17 @@ debug-assertions = false
 # that's what [Trunk reads](https://github.com/trunk-rs/trunk/issues/605).
 # Optimize for size in the wasm-release profile to reduce load times and bandwidth usage on web.
 [profile.release]
-# Compile the entire crate as one unit.
-# Slows compile times, marginal improvements.
-codegen-units = 1
-# Do a second optimization pass over the entire program, including dependencies.
-# Slows compile times, marginal improvements.
-lto = "thin"
 # Optimize with size in mind (also try "z", sometimes it is better).
 # Slightly slows compile times, great improvements to file size and runtime performance.
 opt-level = "s"
 # Strip all debugging information from the binary to slightly reduce file size.
 strip = "debuginfo"
+# Do a second optimization pass over the entire program, including dependencies.
+# Slows compile times, marginal improvements.
+lto = "thin"
+# Compile the entire crate as one unit.
+# Slows compile times, marginal improvements.
+codegen-units = 1
 
 # Override some settings for native builds.
 [profile.release-native]

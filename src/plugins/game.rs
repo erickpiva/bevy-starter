@@ -1,6 +1,6 @@
 #![allow(unused)]
 
-use avian2d::{math::*, prelude::*};
+use avian3d::{math::*, prelude::*};
 use bevy::{app::App, prelude::*};
 
 use crate::prelude::random_number;
