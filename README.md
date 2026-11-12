@@ -1,6 +1,6 @@
 # Bevy Starter
 
-This repo is a minimal starter for Bevy `0.19`
+This repo is a minimal starter for Bevy `0.20`
 
 ## Inspiration
 
@@ -27,7 +27,10 @@ Depending on if you are building a 2D or 3D game you can set your Bevy features
 accordingly in `Cargo.toml` to reduce compile times. For 2D games you can use:
 
 ```toml
-bevy = { version = "0.19", default-features = false, features = ["2d"] }
+[dependencies.bevy]
+version = "0.20"
+default-features = false
+features = ["2d"]
 ```
 
 See
@@ -38,6 +41,10 @@ for more information.
 
 - Cargo configured according to Bevy guide with build optimizations
 - [Avian](https://github.com/Jondolf/avian) physics
+- Assets menaging with bevy_asset_loader and iyes_progress.
+- Data-Driven framework with bevy_common_assets
+- Controller with bevy_tnua
+- Navmesh gen and pathing with vleue_navigator
 - Generic set of starting plugins with your games logic inside `GamePlugin`
 - `TLDR.md` for quick reference and passing to LLMs
 - `.agents` folder with bevy skills for LLMs
