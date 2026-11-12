@@ -25,12 +25,11 @@ impl Plugin for AppPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins((
             third_party::ThirdPartyPlugin,
-            plugins::camera::plugin,
-            plugins::defaults::plugin,
-            plugins::fonts::plugin,
-            plugins::game::plugin,
-            plugins::input::plugin,
-            plugins::physics::plugin,
+            plugins::camera::CameraPlugin,
+            plugins::defaults::DefaultPlugin,
+            plugins::game::GamePlugin,
+            plugins::input::InputPlugin,
+            plugins::physics::PhysicsPlugin,
         ));
 
         // Enable dev tools for dev builds.

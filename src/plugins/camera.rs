@@ -1,13 +1,7 @@
 use bevy::prelude::*;
 
-#[derive(Component)]
-#[require(Camera2d)]
-pub struct MainCamera;
+pub struct CameraPlugin;
 
-pub(crate) fn plugin(app: &mut App) {
-    app.add_systems(Startup, initialize_camera);
-}
-
-fn initialize_camera(mut commands: Commands) {
-    commands.spawn(MainCamera);
+impl Plugin for CameraPlugin {
+    fn build(&self, _app: &mut App) {}
 }
