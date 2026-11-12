@@ -9,6 +9,9 @@ mod styles;
 mod third_party;
 mod utils;
 
+#[cfg(feature = "dev")]
+mod debug;
+
 /// Use this module instead of importing the `components`, `plugins`, `resources`, and `utils`
 /// modules directly.
 mod prelude {
@@ -32,6 +35,6 @@ impl Plugin for AppPlugin {
 
         // Enable dev tools for dev builds.
         #[cfg(feature = "dev")]
-        app.add_plugins(plugins::debug::plugin);
+        app.add_plugins(debug::DebugPlugin);
     }
 }

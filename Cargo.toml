@@ -63,13 +63,15 @@ default = [
 dev = [
   "avian3d/debug-plugin",
   "avian3d/diagnostic_ui",
+  "bevy/bevy_feathers",
   "bevy/bevy_ui_debug",
   "bevy/dev",
   # Improve compile times for dev builds by linking Bevy as a dynamic library.
   "bevy/dynamic_linking",
   # Improve error messages coming from Bevy
   "bevy/track_location",
-  "vleue_navigator/debug-with-gizmos",
+  "dep:bevy_console",
+  "vleue_navigator/debug-with-gizmos"
 ]
 dev_native = [
   # Enable embedded asset hot reloading for native dev builds.
