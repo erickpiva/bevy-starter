@@ -1,6 +1,10 @@
-use rand::{Rng, RngExt};
+use bevy::prelude::*;
+use rand::{Rng, RngExt, distr::uniform::SampleUniform};
 
-pub fn random_number(min: f32, max: f32) -> f32 {
+pub fn random_number<T>(min: T, max: T) -> T
+where
+    T: SampleUniform + PartialOrd,
+{
     let mut rng = rand::rng();
     rng.random_range(min..max)
 }
