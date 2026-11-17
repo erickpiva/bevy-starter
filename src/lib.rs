@@ -24,9 +24,9 @@ pub struct AppPlugin;
 impl Plugin for AppPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins((
+            plugins::defaults::DefaultPlugin,
             third_party::ThirdPartyPlugin,
             plugins::camera::CameraPlugin,
-            plugins::defaults::DefaultPlugin,
             plugins::game::GamePlugin,
             plugins::input::InputPlugin,
             plugins::physics::PhysicsPlugin,
